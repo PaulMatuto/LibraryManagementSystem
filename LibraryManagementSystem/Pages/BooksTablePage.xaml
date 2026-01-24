@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="LibraryManagementSystem.Pages.BooksTablePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LibraryManagementSystem.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <CommandBar HorizontalAlignment="Left" DefaultLabelPosition="Collapsed">
+                <AppBarButton Icon="Back" Click="BackButton_Click"/>
+            </CommandBar>
+
+            <TextBlock HorizontalAlignment="Center" Text="Library Management System" Margin="0 20 0 0" FontSize="25"/>
+
+            <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right" Margin="40 5">
+                <AppBarButton Icon="Add" Label="Add"/>
+                <AppBarButton Icon="Edit" Label="Edit"/>
+            </CommandBar>
+
+            <controls:DataGrid HeadersVisibility="Column"
+                               HorizontalAlignment="Stretch"
+                               Margin="40 5" CanUserResizeColumns="False"
+                               CanUserReorderColumns="False"
+                               CanUserSortColumns="False">
+                <controls:DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="primitives:DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="15"/>
+                    </Style>
+                </controls:DataGrid.ColumnHeaderStyle>
+
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="Title" Width="40*"/>
+                    <controls:DataGridTextColumn Header="Author" Width="30*"/>
+                    <controls:DataGridTextColumn Header="Genre" Width="25*"/>
+                    <controls:DataGridTextColumn Header="Year Published" Width="20*"/>
+                    <controls:DataGridTextColumn Header="Quantity" Width="Auto"/>
+                    <controls:DataGridTextColumn Width="10*"/>
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </StackPanel>
+    </Grid>
+</Page>

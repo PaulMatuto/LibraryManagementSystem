@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="LibraryManagementSystem.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LibraryManagementSystem"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+		<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+			<TextBlock HorizontalAlignment="Center" Text="Library Management System" FontSize="50"/>
+
+			<Button Content="Go to Books Table Page" HorizontalAlignment="Center" FontSize="15" Margin="0 20 0 0" Click="GoToBooksTablePage"/>
+		</StackPanel>
+    </Grid>
+</Page>
