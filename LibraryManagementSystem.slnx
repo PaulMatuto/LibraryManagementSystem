@@ -4,6 +4,7 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="LibraryManagementSystem.Data/LibraryManagementSystem.Data.csproj" Id="be22424c-fb1f-4971-a9ea-25646436c392" />
   <Project Path="LibraryManagementSystem/LibraryManagementSystem.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />

@@ -38,9 +38,9 @@
                     <controls:DataGridTextColumn Header="Title" Width="40*"/>
                     <controls:DataGridTextColumn Header="Author" Width="30*"/>
                     <controls:DataGridTextColumn Header="Genre" Width="25*"/>
-                    <controls:DataGridTextColumn Header="Year Published" Width="20*"/>
+                    <controls:DataGridTextColumn Header="Year Published" Width="15*"/>
                     <controls:DataGridTextColumn Header="Quantity" Width="Auto"/>
-                    <controls:DataGridTextColumn Width="10*"/>
+                    <controls:DataGridTextColumn Width="15*"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </StackPanel>
