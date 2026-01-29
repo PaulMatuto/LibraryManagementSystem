@@ -23,11 +23,15 @@
                 <AppBarButton Icon="Edit" Label="Edit"/>
             </CommandBar>
 
-            <controls:DataGrid HeadersVisibility="Column"
+            <controls:DataGrid x:Name="BooksTable"
+                               ItemsSource="{x:Bind Books}"
+                               AutoGenerateColumns="False"
+                               HeadersVisibility="Column"
                                HorizontalAlignment="Stretch"
                                Margin="40 5" CanUserResizeColumns="False"
                                CanUserReorderColumns="False"
-                               CanUserSortColumns="False">
+                               CanUserSortColumns="True"
+                               IsReadOnly="True">
                 <controls:DataGrid.ColumnHeaderStyle>
                     <Style TargetType="primitives:DataGridColumnHeader">
                         <Setter Property="FontSize" Value="15"/>
@@ -35,11 +39,11 @@
                 </controls:DataGrid.ColumnHeaderStyle>
 
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Title" Width="40*"/>
-                    <controls:DataGridTextColumn Header="Author" Width="30*"/>
-                    <controls:DataGridTextColumn Header="Genre" Width="25*"/>
-                    <controls:DataGridTextColumn Header="Year Published" Width="15*"/>
-                    <controls:DataGridTextColumn Header="Quantity" Width="Auto"/>
+                    <controls:DataGridTextColumn Header="Title" Width="40*" Binding="{Binding Title}"/>
+                    <controls:DataGridTextColumn Header="Author" Width="30*" Binding="{Binding Author}"/>
+                    <controls:DataGridTextColumn Header="Genre" Width="25*" Binding="{Binding Genre}"/>
+                    <controls:DataGridTextColumn Header="Year Published" Width="15*" Binding="{Binding YearPublished}"/>
+                    <controls:DataGridTextColumn Header="Quantity" Width="Auto" Binding="{Binding Quantity}"/>
                     <controls:DataGridTextColumn Width="15*"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>

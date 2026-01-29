@@ -12,6 +12,10 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using LibraryManagementSystem.Data.Models;
+using LibraryManagementSystem.Services;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,17 +27,30 @@ namespace LibraryManagementSystem.Pages;
 /// </summary>
 public sealed partial class BooksTablePage : Page
 {
+    private readonly LibraryService _libraryService = new();
+    public ObservableCollection<Book> Books { get; private set; } = new();
     public BooksTablePage()
     {
         InitializeComponent();
+        DataContext = this;
     }
     private void BackButton_Click(object sender, RoutedEventArgs e)
     {
         if (Frame.CanGoBack)
             Frame.GoBack();
     }
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+        await LoadBooksAsync();
+    }
+    private async Task LoadBooksAsync()
+    {
+        var books = await _libraryService.GetBooksAsync();
+        Books.Clear();
+        foreach (var book in books)
+        {
+            Books.Add(book);
+        }
     }
 }
