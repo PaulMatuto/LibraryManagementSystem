@@ -20,7 +20,6 @@
 
             <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right" Margin="40 5">
                 <AppBarButton Icon="Add" Label="Add"/>
-                <AppBarButton Icon="Edit" Label="Edit"/>
             </CommandBar>
 
             <controls:DataGrid x:Name="BooksTable"
@@ -44,9 +43,47 @@
                     <controls:DataGridTextColumn Header="Genre" Width="25*" Binding="{Binding Genre}"/>
                     <controls:DataGridTextColumn Header="Year Published" Width="15*" Binding="{Binding YearPublished}"/>
                     <controls:DataGridTextColumn Header="Quantity" Width="Auto" Binding="{Binding Quantity}"/>
-                    <controls:DataGridTextColumn Width="15*"/>
+
+                    <controls:DataGridTemplateColumn Width="15*">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
+                                    <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right">
+                                        <AppBarButton Icon="Edit" Label="Edit" Style="{StaticResource DefaultAppBarButtonStyle}"  
+                                                      Click="EditButton_ClickAsync"
+                                                      Tag="{Binding}"/>
+
+                                        <AppBarButton Icon="Delete" Label="Delete" Style="{StaticResource DefaultAppBarButtonStyle}"
+                                                      Command="{Binding DataContext.DeleteCommand, ElementName=BooksTable}"
+                                                      Tag="{Binding}"/>
+
+                                    </CommandBar>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </StackPanel>
+        <ContentDialog x:Name="EditBookDialog"   Title="Edit Book Details" 
+                       PrimaryButtonText="Save" SecondaryButtonText="Cancel"
+                       PrimaryButtonClick="EditDialogPrimaryButton_Clicked">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Enter Book Title:"/>
+                <TextBox x:Name="TitleBox" PlaceholderText="Name" Width="260"/>
+
+                <TextBlock Text="Enter Author:"/>
+                <TextBox x:Name="AuthorBox" PlaceholderText="Surname" Width="260"/>
+
+                <TextBlock Text="Enter Genre:"/>
+                <TextBox x:Name="GenreBox" PlaceholderText="Genre" Width="260"/>
+
+                <TextBlock Text="Enter Year Published:"/>
+                <TextBox x:Name="YearPublishedBox" PlaceholderText="Year Published" Width="260"/>
+
+                <TextBlock Text="Enter Quantity:"/>
+                <TextBox x:Name="QuantityBox" PlaceholderText="Quantity" Width="260"/>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 </Page>

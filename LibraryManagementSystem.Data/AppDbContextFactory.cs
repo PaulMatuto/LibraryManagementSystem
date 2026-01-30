@@ -14,17 +14,34 @@ namespace LibraryManagementSystem.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            string pipeName = GetLocalDbPipeName();
+            string pipeName = GetPipeName();
             optionsBuilder.UseSqlServer(
                 $@"Server={pipeName};Database=LibraryManagementSystemDb;Trusted_Connection=True;TrustServerCertificate=True;");
             
             return new AppDbContext(optionsBuilder.Options);
         }
-        private string GetLocalDbPipeName()
+        private string GetPipeName()
         {
             try
             {
-                var process = new Process
+                var startProcess = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "sqllocaldb",
+                        Arguments = "start mssqllocaldb",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                startProcess.Start();
+                startProcess.WaitForExit();
+
+                System.Threading.Thread.Sleep(1000);
+
+                var infoProcess = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -36,9 +53,9 @@ namespace LibraryManagementSystem.Data
                     }
                 };
 
-                process.Start();
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
+                infoProcess.Start();
+                string output = infoProcess.StandardOutput.ReadToEnd();
+                infoProcess.WaitForExit();
 
                 var match = Regex.Match(output, @"Instance pipe name:\s*(.+)");
                 if (match.Success)
@@ -46,10 +63,11 @@ namespace LibraryManagementSystem.Data
                     return match.Groups[1].Value.Trim();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                Debug.WriteLine($"Error starting LocalDB: {ex.Message}");
             }
+
             return @"np:\\.\pipe\LOCALDB#C2181B79\tsql\query";
         }
     }

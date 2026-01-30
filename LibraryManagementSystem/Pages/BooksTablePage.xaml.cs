@@ -29,6 +29,7 @@ public sealed partial class BooksTablePage : Page
 {
     private readonly LibraryService _libraryService = new();
     public ObservableCollection<Book> Books { get; private set; } = new();
+    private Book? _book;
     public BooksTablePage()
     {
         InitializeComponent();
@@ -52,5 +53,25 @@ public sealed partial class BooksTablePage : Page
         {
             Books.Add(book);
         }
+
+    }
+    private async void EditButton_ClickAsync(object sender, RoutedEventArgs e)
+    {
+        _book = (sender as Button)?.Tag as Book;
+        if (_book == null)
+            return;
+
+        TitleBox.Text = _book.Title;
+        AuthorBox.Text = _book.Author;
+        GenreBox.Text = _book.Genre;
+        YearPublishedBox.Text = _book.YearPublished.ToString();
+        QuantityBox.Text = _book.Quantity.ToString();
+
+        await EditBookDialog.ShowAsync();
+    }
+    private async void EditDialogPrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs e)
+    { 
+        _libraryService.UpdateBook(bookId: _book.BookId, TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
+        await _libraryService.GetBooksAsync();
     }
 }
