@@ -29,6 +29,7 @@ public sealed partial class BooksTablePage : Page
 {
     private readonly LibraryService _libraryService = new();
     public ObservableCollection<Book> Books { get; private set; } = new();
+    private bool _inEditMode;
     private Book? _book;
     public BooksTablePage()
     {
@@ -53,13 +54,16 @@ public sealed partial class BooksTablePage : Page
         {
             Books.Add(book);
         }
-
     }
     private async void EditButton_ClickAsync(object sender, RoutedEventArgs e)
     {
+        _inEditMode = true;
         _book = (sender as Button)?.Tag as Book;
         if (_book == null)
             return;
+
+        BookDialog.Title = "Edit Book Details";
+        BookDialog.PrimaryButtonText = "Save";
 
         TitleBox.Text = _book.Title;
         AuthorBox.Text = _book.Author;
@@ -67,11 +71,35 @@ public sealed partial class BooksTablePage : Page
         YearPublishedBox.Text = _book.YearPublished.ToString();
         QuantityBox.Text = _book.Quantity.ToString();
 
-        await EditBookDialog.ShowAsync();
+        await BookDialog.ShowAsync();
     }
-    private async void EditDialogPrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs e)
+    private async void AddButton_ClickAsync(object sender, RoutedEventArgs e)
+    {
+        _inEditMode = false;
+        _book = null;
+
+        BookDialog.Title = "Add New Book";
+        BookDialog.PrimaryButtonText = "Add";
+
+        TitleBox.Text = "";
+        AuthorBox.Text = "";
+        GenreBox.Text = "";
+        YearPublishedBox.Text = "";
+        QuantityBox.Text = "";
+
+        await BookDialog.ShowAsync();
+    }
+    private async void BookDialogPrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs e)
     { 
-        _libraryService.UpdateBook(bookId: _book.BookId, TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
-        await _libraryService.GetBooksAsync();
+        if (_inEditMode)
+        {
+            _libraryService.UpdateBook(_book!.BookId, TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
+        }
+        else
+        {
+            _libraryService.AddBook(TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
+        }
+
+        await LoadBooksAsync();
     }
 }

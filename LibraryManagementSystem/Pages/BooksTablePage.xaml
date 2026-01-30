@@ -11,69 +11,76 @@
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <CommandBar HorizontalAlignment="Left" DefaultLabelPosition="Collapsed">
-                <AppBarButton Icon="Back" Click="BackButton_Click"/>
-            </CommandBar>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
 
-            <TextBlock HorizontalAlignment="Center" Text="Library Management System" Margin="0 20 0 0" FontSize="25"/>
+        </Grid.RowDefinitions>
+            
+        <CommandBar Grid.Row="0" HorizontalAlignment="Left" DefaultLabelPosition="Collapsed">
+            <AppBarButton Icon="Back" Click="BackButton_Click"/>
+        </CommandBar>
 
-            <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right" Margin="40 5">
-                <AppBarButton Icon="Add" Label="Add"/>
-            </CommandBar>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="Library Management System" Margin="0 20 0 0" FontSize="25"/>
 
-            <controls:DataGrid x:Name="BooksTable"
-                               ItemsSource="{x:Bind Books}"
-                               AutoGenerateColumns="False"
-                               HeadersVisibility="Column"
-                               HorizontalAlignment="Stretch"
-                               Margin="40 5" CanUserResizeColumns="False"
-                               CanUserReorderColumns="False"
-                               CanUserSortColumns="True"
-                               IsReadOnly="True">
-                <controls:DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="primitives:DataGridColumnHeader">
-                        <Setter Property="FontSize" Value="15"/>
-                    </Style>
-                </controls:DataGrid.ColumnHeaderStyle>
+        <CommandBar Grid.Row="2" HorizontalAlignment="Right" DefaultLabelPosition="Right" Margin="40 5">
+            <AppBarButton Icon="Add" Label="Add" Click="AddButton_ClickAsync"/>
+        </CommandBar>
 
-                <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Title" Width="40*" Binding="{Binding Title}"/>
-                    <controls:DataGridTextColumn Header="Author" Width="30*" Binding="{Binding Author}"/>
-                    <controls:DataGridTextColumn Header="Genre" Width="25*" Binding="{Binding Genre}"/>
-                    <controls:DataGridTextColumn Header="Year Published" Width="15*" Binding="{Binding YearPublished}"/>
-                    <controls:DataGridTextColumn Header="Quantity" Width="Auto" Binding="{Binding Quantity}"/>
+        <controls:DataGrid x:Name="BooksTable" Grid.Row="3"
+                           ItemsSource="{x:Bind Books}"
+                           AutoGenerateColumns="False"
+                           HeadersVisibility="Column"
+                           HorizontalAlignment="Stretch"
+                           Margin="40 5 40 20" CanUserResizeColumns="False"
+                           CanUserReorderColumns="False"
+                           CanUserSortColumns="True"
+                           IsReadOnly="True">
+            <controls:DataGrid.ColumnHeaderStyle>
+                <Style TargetType="primitives:DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </controls:DataGrid.ColumnHeaderStyle>
 
-                    <controls:DataGridTemplateColumn Width="15*">
-                        <controls:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
-                                    <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right">
-                                        <AppBarButton Icon="Edit" Label="Edit" Style="{StaticResource DefaultAppBarButtonStyle}"  
-                                                      Click="EditButton_ClickAsync"
-                                                      Tag="{Binding}"/>
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Title" Width="40*" Binding="{Binding Title}"/>
+                <controls:DataGridTextColumn Header="Author" Width="30*" Binding="{Binding Author}"/>
+                <controls:DataGridTextColumn Header="Genre" Width="25*" Binding="{Binding Genre}"/>
+                <controls:DataGridTextColumn Header="Year Published" Width="15*" Binding="{Binding YearPublished}"/>
+                <controls:DataGridTextColumn Header="Quantity" Width="Auto" Binding="{Binding Quantity}"/>
 
-                                        <AppBarButton Icon="Delete" Label="Delete" Style="{StaticResource DefaultAppBarButtonStyle}"
-                                                      Command="{Binding DataContext.DeleteCommand, ElementName=BooksTable}"
-                                                      Tag="{Binding}"/>
+                <controls:DataGridTemplateColumn Width="15*">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
+                                <CommandBar  HorizontalAlignment="Right" DefaultLabelPosition="Right">
+                                    <AppBarButton Icon="Edit" Label="Edit" Style="{StaticResource DefaultAppBarButtonStyle}"  
+                                                  Click="EditButton_ClickAsync"
+                                                  Tag="{Binding}"/>
 
-                                    </CommandBar>
-                                </StackPanel>
-                            </DataTemplate>
-                        </controls:DataGridTemplateColumn.CellTemplate>
-                    </controls:DataGridTemplateColumn>
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
-        </StackPanel>
-        <ContentDialog x:Name="EditBookDialog"   Title="Edit Book Details" 
-                       PrimaryButtonText="Save" SecondaryButtonText="Cancel"
-                       PrimaryButtonClick="EditDialogPrimaryButton_Clicked">
+                                    <AppBarButton Icon="Delete" Label="Delete" Style="{StaticResource DefaultAppBarButtonStyle}"
+                                                  Click="AddButton_ClickAsync"
+                                                  Tag="{Binding}"/>
+
+                                </CommandBar>
+                            </StackPanel>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        
+        <ContentDialog x:Name="BookDialog"
+                       SecondaryButtonText="Cancel"
+                       PrimaryButtonClick="BookDialogPrimaryButton_Clicked">
             <StackPanel Spacing="12">
                 <TextBlock Text="Enter Book Title:"/>
-                <TextBox x:Name="TitleBox" PlaceholderText="Name" Width="260"/>
+                <TextBox x:Name="TitleBox" PlaceholderText="Book Title" Width="260"/>
 
                 <TextBlock Text="Enter Author:"/>
-                <TextBox x:Name="AuthorBox" PlaceholderText="Surname" Width="260"/>
+                <TextBox x:Name="AuthorBox" PlaceholderText="Author Mame" Width="260"/>
 
                 <TextBlock Text="Enter Genre:"/>
                 <TextBox x:Name="GenreBox" PlaceholderText="Genre" Width="260"/>
