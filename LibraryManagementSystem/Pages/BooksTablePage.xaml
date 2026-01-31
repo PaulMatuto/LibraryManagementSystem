@@ -69,7 +69,7 @@
                                                       Tag="{Binding}"/>
 
                                         <AppBarButton Icon="Delete" Label="Delete" Style="{StaticResource DefaultAppBarButtonStyle}"
-                                                      Click="AddButton_ClickAsync"
+                                                      Click="DeleteButton_Click"
                                                       Tag="{Binding}"/>
 
                                     </CommandBar>
@@ -100,6 +100,16 @@
                 <TextBlock Text="Enter Quantity:"/>
                 <TextBox x:Name="QuantityBox" PlaceholderText="Quantity" Width="260"/>
             </StackPanel>
+        </ContentDialog>
+
+        <ContentDialog x:Name="DeleteBookConfirmDialog"
+                       Title="Delete book?"
+                       PrimaryButtonText="Delete"
+                       CloseButtonText="Cancel"
+                       DefaultButton="Close"
+                       PrimaryButtonClick="DeleteBookDialogPrimaryButton_Clicked">
+            
+            <TextBlock  x:Name="DeleteDialogText" TextWrapping="Wrap" />
         </ContentDialog>
     </Grid>
 </Page>

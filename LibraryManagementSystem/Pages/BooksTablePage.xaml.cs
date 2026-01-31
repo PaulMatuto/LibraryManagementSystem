@@ -116,4 +116,21 @@ public sealed partial class BooksTablePage : Page
 
         await LoadBooksAsync();
     }
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        _book = (sender as Button)?.Tag as Book;
+        if (_book == null)
+            return;
+
+        DeleteDialogText.Text = $"Are you sure you want to delete \"{_book.Title}\"?";
+
+        DeleteBookConfirmDialog.XamlRoot = this.XamlRoot;
+
+        await DeleteBookConfirmDialog.ShowAsync();
+    }
+    private async void DeleteBookDialogPrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs e)
+    { 
+        _libraryService.DeleteBook(_book!.BookId);
+        await LoadBooksAsync();
+    }
 }
