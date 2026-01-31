@@ -27,33 +27,47 @@ namespace LibraryManagementSystem.Pages;
 /// </summary>
 public sealed partial class BooksTablePage : Page
 {
-    private readonly LibraryService _libraryService = new();
-    public ObservableCollection<Book> Books { get; private set; } = new();
+    private LibraryService _libraryService;
+    public ObservableCollection<Book> Books { get; private set; } = [];
     private bool _inEditMode;
     private Book? _book;
     public BooksTablePage()
     {
         InitializeComponent();
         DataContext = this;
+
+        NavigationCacheMode = NavigationCacheMode.Required;
+    }
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        await LoadBooksAsync();
     }
     private void BackButton_Click(object sender, RoutedEventArgs e)
     {
         if (Frame.CanGoBack)
             Frame.GoBack();
     }
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-        await LoadBooksAsync();
-    }
     private async Task LoadBooksAsync()
     {
-        var books = await _libraryService.GetBooksAsync();
+        LoadingRing.IsActive = true;
+
+        if (_libraryService == null)
+        {
+            await Task.Run(() =>
+            {
+                _libraryService = new LibraryService();
+            });
+        }
+
+        var books = await _libraryService!.GetBooksAsync();
+
         Books.Clear();
         foreach (var book in books)
-        {
             Books.Add(book);
-        }
+
+        LoadingRing.IsActive = false;
     }
     private async void EditButton_ClickAsync(object sender, RoutedEventArgs e)
     {
@@ -93,11 +107,11 @@ public sealed partial class BooksTablePage : Page
     { 
         if (_inEditMode)
         {
-            _libraryService.UpdateBook(_book!.BookId, TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
+            _libraryService!.UpdateBook(_book!.BookId, TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
         }
         else
         {
-            _libraryService.AddBook(TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
+            _libraryService!.AddBook(TitleBox.Text, AuthorBox.Text, GenreBox.Text, int.Parse(YearPublishedBox.Text), int.Parse(QuantityBox.Text));
         }
 
         await LoadBooksAsync();
